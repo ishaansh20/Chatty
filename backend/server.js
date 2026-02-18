@@ -122,8 +122,13 @@ io.on("connection", (socket) => {
 });
 
 // Connect to MongoDB Atlas
+if (!process.env.MONGODB_URI) {
+  console.error("❌ MONGODB_URI is not defined in environment variables");
+  process.exit(1);
+}
+
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/chatty", {
+  .connect(process.env.MONGODB_URI, {
     serverSelectionTimeoutMS: 5000,
   })
   .then(() => {
